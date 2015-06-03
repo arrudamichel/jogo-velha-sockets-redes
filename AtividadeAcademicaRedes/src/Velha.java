@@ -81,7 +81,7 @@ public class Velha extends JFrame {
 		contentPane.add(layeredPane, BorderLayout.CENTER);
 		
 		lblNomeJogador.setText(nomeJogador);
-		lblNomeJogador.setText(nomeJogador + " X " + nomeJogador2);
+		lblNomeJogo.setText(nomeJogador + " X " + nomeJogador2);
 		
 		button_00 = new JButton("");
 		button_00.addActionListener(new ActionListener() {
