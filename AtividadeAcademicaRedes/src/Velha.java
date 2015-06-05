@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.UIManager;
@@ -43,8 +44,9 @@ public class Velha extends JFrame {
 	private JButton button_21;
 	private JButton button_22;
 	
-	private String nomeJogador1 = "Michel";
-	private String nomeJogador2 = "Manoel";
+	private String nomeJogador = "";
+	private String nomeOponente = "";
+	private Cliente cliente;
 
 	JLabel lblNomeJogador = new JLabel();
 	JLabel lblNomeJogo = new JLabel();
@@ -67,9 +69,10 @@ public class Velha extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @param nomeJogador 
+	 * @param nomeJogador
+	 * @param nomeOponente
 	 */
-	public Velha(String nomeJogador) {
+	public Velha(String nomeJogador, String nomeOponente, Cliente cliente) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 318);
 		contentPane = new JPanel();
@@ -80,8 +83,12 @@ public class Velha extends JFrame {
 		JLayeredPane layeredPane = new JLayeredPane();
 		contentPane.add(layeredPane, BorderLayout.CENTER);
 		
-		lblNomeJogador.setText(nomeJogador);
-		lblNomeJogo.setText(nomeJogador + " X " + nomeJogador2);
+		this.nomeJogador = nomeJogador;
+		this.nomeOponente = nomeOponente;
+		this.cliente = cliente;
+		
+		lblNomeJogador.setText(this.nomeJogador);
+		lblNomeJogo.setText(this.nomeJogador + " X " + this.nomeOponente);
 		
 		button_00 = new JButton("");
 		button_00.addActionListener(new ActionListener() {
@@ -100,6 +107,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_00.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_00.setBounds(125, 72, 50, 50);
@@ -122,6 +131,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_10.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_10.setBounds(125, 133, 50, 50);
@@ -145,6 +156,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_20.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		layeredPane.add(button_20);
@@ -166,6 +179,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_11.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_11.setBounds(185, 133, 50, 50);
@@ -188,6 +203,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_01.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_01.setBounds(185, 72, 50, 50);
@@ -210,6 +227,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_21.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_21.setBounds(185, 190, 50, 50);
@@ -232,6 +251,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_02.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_02.setBounds(245, 72, 50, 50);
@@ -254,6 +275,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_12.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_12.setBounds(245, 133, 50, 50);
@@ -276,6 +299,8 @@ public class Velha extends JFrame {
 				}else if(valor == -1){
 					button_22.setText("X");
 				}
+				
+				recebeOponente();
 			}
 		});
 		button_22.setBounds(245, 190, 50, 50);
@@ -299,6 +324,23 @@ public class Velha extends JFrame {
 		panel.setBackground(UIManager.getColor("Button.light"));
 		panel.setBounds(10, 57, 404, 194);
 		layeredPane.add(panel);
+	}
+	
+	public void recebeOponente(){
+		try {
+			String dados = cliente.recebeDados();
+			
+			String[] array = dados.split(";");
+			
+			int linha = Integer.parseInt(array[0]);
+			int coluna = Integer.parseInt(array[1]);
+			
+			cliqueBotaoVelha(linha, coluna);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void preencheMatriz(int linha, int coluna, int valor) {
@@ -372,28 +414,36 @@ public class Velha extends JFrame {
         return 0;
     }
     
-    public int cliqueBotaoVelha(int linha, int coluna){
+    public int cliqueBotaoVelha(int linha, int coluna) {
+    	
+    	try {
+			cliente.enviaDados("jogar;" + cliente.getId() + ";" + linha + ";" + coluna);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     	int valor = 0;
     	
     	if(jogador == 1){					
 			valor = 1;
 			jogador = -1;					
-			lblNomeJogador.setText(nomeJogador2);
+			lblNomeJogador.setText(nomeOponente);
 		}				
 		else if (jogador == -1){
 			valor = -1;
 			jogador = 1;
-			lblNomeJogador.setText(nomeJogador1);
+			lblNomeJogador.setText(nomeJogador);
 		}
 
 		preencheMatriz(linha, coluna, valor);
 		int retorno = verificaMatriz();
 		if(retorno == 1){
-			JOptionPane.showMessageDialog(null, nomeJogador1+" venceu o jogo!");
+			JOptionPane.showMessageDialog(null, nomeJogador+" venceu o jogo!");
 			limparVelha();
 			return 0;
 		}else if(retorno == -1){
-			JOptionPane.showMessageDialog(null, nomeJogador2+" venceu o jogo!");
+			JOptionPane.showMessageDialog(null, nomeOponente+" venceu o jogo!");
 			limparVelha();
 			return 0;
 		}else if(retorno == 2){
