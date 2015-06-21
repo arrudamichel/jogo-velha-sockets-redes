@@ -64,8 +64,8 @@ public class TrataCliente implements Runnable {
 				clientes.get(key).setOponenteId(this.clienteServidor.getLoginId());
 				
 				//Retorna Oponente de cada Login
-				servidor.distribuiMensagem(this.clienteServidor.getLoginPS(), this.clienteServidor.getLoginId() +";"+ clientes.get(key).getLogin());
-				servidor.distribuiMensagem(clientes.get(key).getLoginPS(), clientes.get(key).getLoginId() +";"+ this.clienteServidor.getLogin());
+				servidor.distribuiMensagem(this.clienteServidor.getLoginPS(), this.clienteServidor.getLoginId() +";"+ clientes.get(key).getLogin() +";"+ clientes.get(key).getLoginId());
+				servidor.distribuiMensagem(clientes.get(key).getLoginPS(), clientes.get(key).getLoginId() +";"+ this.clienteServidor.getLogin() +";"+ this.clienteServidor.getLoginId());
 			}
 		}
 		
@@ -74,8 +74,10 @@ public class TrataCliente implements Runnable {
 	
 	public void Jogar(String id, String linha, String coluna){
 		
-		ClienteServidor cliente = this.servidor.clientes.get(id);
+		System.out.println(id + "  -  " + linha + ";" + coluna);
 		
-		servidor.distribuiMensagem(cliente.getOponentePS(), linha + ";" + coluna);
+		ClienteServidor cs = this.servidor.clientes.get(Integer.parseInt(id));
+		
+		servidor.distribuiMensagem(cs.getOponentePS(), linha + ";" + coluna);
 	}
 }

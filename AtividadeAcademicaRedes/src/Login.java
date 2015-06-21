@@ -99,6 +99,8 @@ public class Login extends JFrame {
 					
 					cliente.setId(array[0]);
 					
+					cliente.setIdOponente(array[2]);
+					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					lblCarregando.setVisible(false);

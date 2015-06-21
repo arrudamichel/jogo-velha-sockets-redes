@@ -47,6 +47,9 @@ public class Servidor {
 	}
 
 	public void distribuiMensagem(PrintStream cliente, String msg) {
+		
+		System.out.println(msg);
+		
 		cliente.println(msg);		
 	}
 }

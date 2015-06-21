@@ -13,6 +13,7 @@ public class Cliente {
 	private Socket socketCliente;
 	PrintStream saida;
 	private String id;
+	private String idOponente;
 
 	public Cliente (String host, int porta) {
 		this.host = host;
@@ -54,5 +55,13 @@ public class Cliente {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getIdOponente() {
+		return idOponente;
+	}
+
+	public void setIdOponente(String idOponente) {
+		this.idOponente = idOponente;
 	}
 }
