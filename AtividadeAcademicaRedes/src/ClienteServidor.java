@@ -10,7 +10,7 @@ public class ClienteServidor {
 	int oponenteId;
 	PrintStream oponentePS;
 	int ativo;
-	ArrayList<ClientePassivo> clientePassivo;
+	ArrayList<ClientePassivo> clientePassivo = new ArrayList<>();
 	
 	ClienteServidor(){
 		

@@ -107,8 +107,9 @@ public class TrataCliente implements Runnable {
 				clientePassivo.setJogador2PS(clientes.get(keyCliente).getOponentePS());
 				
 				clientes.get(keyCliente).setClientePassivo(clientePassivo);
+				clientes.get(clientes.get(keyCliente).getOponenteId()).setClientePassivo(clientePassivo);
 				
-				servidor.distribuiMensagem(clientes.get(key).getLoginPS(), "logarPassivo;" 
+				servidor.distribuiMensagem(clientePassivo.getLoginPS(), "logarPassivo;" 
 										 + clientes.get(keyCliente).getLogin() 
 										 + ";" 
 										 + clientes.get(keyCliente).getLoginId()

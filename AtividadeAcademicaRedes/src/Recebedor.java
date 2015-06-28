@@ -30,23 +30,28 @@ public class Recebedor implements Runnable {
 		switch (array[0]) {
 		case "logar":
 			//Id, loginOponente, idOponente 
-			Logar(array[1], array[2], array[3]);
+			logar(array[1], array[2], array[3]);
 			break;
 
 		case "logarPassivo":
 			//loginJogador1, idloginJogador1, loginJogador2, idloginJogador2 
-			LogarPassivo(array[1], array[2], array[3], array[4]);
+			logarPassivo(array[1], array[2], array[3], array[4]);
 			break;
 			
 		case "jogar":
-			Jogar(array[1], array[2]);
+			jogar(array[1], array[2]);
+			break;
+			
+		case "jogarPassivo":
+			//idJogador, linha, coluna 
+			jogarPassivo(array[1], array[2], array[3]);
 			break;
 		default:
 			break;
 		}
 	}
 	
-	public void Logar(String id, String loginOponente, String idOponente){
+	public void logar(String id, String loginOponente, String idOponente){
 		
 		Cliente cliente = Cliente.getInstance();
 		cliente.setId(id);	
@@ -58,7 +63,7 @@ public class Recebedor implements Runnable {
 		this.velha.show();
 	}
 	
-	public void LogarPassivo(String loginJogador1, String idJogador1, String loginJogador2, String idJogador2){
+	public void logarPassivo(String loginJogador1, String idJogador1, String loginJogador2, String idJogador2){
 		
 		ClientePassivoEscravo clientePassivo = ClientePassivoEscravo.getInstance();
 		clientePassivo.setIdJogador1(idJogador1);
@@ -71,7 +76,7 @@ public class Recebedor implements Runnable {
 		this.velhaPassivo.show();
 	}
 	
-	public void Jogar(String linha, String coluna){
+	public void jogar(String linha, String coluna){
 		
 		this.velha.matrizVelhaBotao[Integer.parseInt(linha)][Integer.parseInt(coluna)].setText("X");
 		this.velha.matrizVelha[Integer.parseInt(linha)][Integer.parseInt(coluna)] = -1;
@@ -87,5 +92,27 @@ public class Recebedor implements Runnable {
 		
 		this.velha.habilitaBotoes();
 		
+	}
+	
+	public void jogarPassivo(String idJogador, String linha, String coluna){
+		
+		if(this.velhaPassivo.idJogador1 == Integer.parseInt(idJogador)){
+			this.velhaPassivo.matrizVelhaBotao[Integer.parseInt(linha)][Integer.parseInt(coluna)].setText("X");
+			this.velhaPassivo.matrizVelha[Integer.parseInt(linha)][Integer.parseInt(coluna)] = 1;
+			this.velhaPassivo.lblNomeJogador.setText(this.velhaPassivo.nomeJogador2);
+		} else {
+			this.velhaPassivo.matrizVelhaBotao[Integer.parseInt(linha)][Integer.parseInt(coluna)].setText("O");
+			this.velhaPassivo.matrizVelha[Integer.parseInt(linha)][Integer.parseInt(coluna)] = -1;
+			this.velhaPassivo.lblNomeJogador.setText(this.velhaPassivo.nomeJogador1);
+		}
+		
+		int retorno = this.velhaPassivo.verificaMatriz();
+		if(retorno == 1){
+			JOptionPane.showMessageDialog(null, this.velhaPassivo.nomeJogador1+" venceu o jogo!");
+			this.velha.limparVelha();			
+		}else if(retorno == -1){
+			JOptionPane.showMessageDialog(null, this.velhaPassivo.nomeJogador2+" venceu o jogo!");
+			this.velha.limparVelha();		
+		}
 	}
 }
