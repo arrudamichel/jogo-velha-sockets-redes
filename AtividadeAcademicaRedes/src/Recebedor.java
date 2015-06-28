@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 public class Recebedor implements Runnable {
 	Velha velha;
+	VelhaPassivo velhaPassivo;
 	private InputStream servidor;
 
 	public Recebedor(InputStream servidor) {
@@ -32,6 +33,11 @@ public class Recebedor implements Runnable {
 			Logar(array[1], array[2], array[3]);
 			break;
 
+		case "logarPassivo":
+			//loginJogador1, idloginJogador1, loginJogador2, idloginJogador2 
+			LogarPassivo(array[1], array[2], array[3], array[4]);
+			break;
+			
 		case "jogar":
 			Jogar(array[1], array[2]);
 			break;
@@ -50,6 +56,19 @@ public class Recebedor implements Runnable {
 		
 		this.velha = new Velha(cliente.getLogin(), loginOponente, cliente);
 		this.velha.show();
+	}
+	
+	public void LogarPassivo(String loginJogador1, String idJogador1, String loginJogador2, String idJogador2){
+		
+		ClientePassivoEscravo clientePassivo = ClientePassivoEscravo.getInstance();
+		clientePassivo.setIdJogador1(idJogador1);
+		clientePassivo.setIdJogador2(idJogador2);
+		clientePassivo.setLoginJogador1(idJogador1);
+		clientePassivo.setLoginJogador2(idJogador2);
+
+		
+		this.velhaPassivo = new VelhaPassivo(loginJogador1, idJogador1, loginJogador2, idJogador2);
+		this.velhaPassivo.show();
 	}
 	
 	public void Jogar(String linha, String coluna){

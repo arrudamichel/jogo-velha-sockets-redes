@@ -1,4 +1,5 @@
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 
 public class ClienteServidor {
@@ -8,11 +9,21 @@ public class ClienteServidor {
 	String oponente;
 	int oponenteId;
 	PrintStream oponentePS;
+	int ativo;
+	ArrayList<ClientePassivo> clientePassivo;
 	
 	ClienteServidor(){
 		
 	}
 
+	public void setClientePassivo(ClientePassivo cliente) {
+		this.clientePassivo.add(cliente);
+	}
+	
+	public ArrayList<ClientePassivo> getClientePassivo() {
+		return this.clientePassivo;
+	}
+	
 	public String getLogin() {
 		return login;
 	}
@@ -59,5 +70,13 @@ public class ClienteServidor {
 
 	public void setOponentePS(PrintStream oponentePS) {
 		this.oponentePS = oponentePS;
+	}
+
+	public int getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(int ativo) {
+		this.ativo = ativo;
 	}	
 }

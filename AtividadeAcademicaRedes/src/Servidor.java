@@ -13,7 +13,7 @@ public class Servidor {
 	}
 
 	private int porta;
-	public Map<Integer, ClienteServidor> clientes;	
+	public Map<Integer, ClienteServidor> clientes;
 	private static int idCliente = 0; 
 
 	public Servidor (int porta) {

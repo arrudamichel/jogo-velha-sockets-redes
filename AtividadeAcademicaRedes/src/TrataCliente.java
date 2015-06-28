@@ -1,5 +1,8 @@
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -33,11 +36,14 @@ public class TrataCliente implements Runnable {
 
 		switch (array[0]) {
 		case "logar":
-			Logar(array[1]);
+			logar(array[1]);
 			break;
 
+		case "logarPassivo":
+			logarPassivo(array[1]);
+			break;
+			
 		case "jogar":
-			System.out.println("JOGAR");
 			Jogar(array[1], array[2], array[3]);
 			break;
 		default:
@@ -45,14 +51,15 @@ public class TrataCliente implements Runnable {
 		}
 	}
 	
-	public void Logar(String login){
+	public void logar(String login){
 		
 		this.clienteServidor.setLogin(login);
+		this.clienteServidor.setAtivo(1);
 		
 		Map<Integer, ClienteServidor> clientes = this.servidor.clientes;
 		
 		for(int key : clientes.keySet()){
-			if(clientes.get(key).getOponente() == null && !clientes.get(key).getLogin().equals(login)){
+			if(clientes.get(key).getOponente() == null && !clientes.get(key).getLogin().equals(login) && this.clienteServidor.getAtivo() == 1){
 				
 				//Inclui Oponente player dois
 				this.clienteServidor.setOponente(clientes.get(key).getLogin());
@@ -69,8 +76,49 @@ public class TrataCliente implements Runnable {
 				servidor.distribuiMensagem(clientes.get(key).getLoginPS(), "logar;" + clientes.get(key).getLoginId() +";"+ this.clienteServidor.getLogin() +";"+ this.clienteServidor.getLoginId());
 			}
 		}
+	}
+	
+	public void logarPassivo(String login){
+
+		ClientePassivo clientePassivo = new ClientePassivo();
+		clientePassivo.setLogin(login);		
 		
+		int keyCliente = -1;
+		this.clienteServidor.setLogin(login);
+		this.clienteServidor.setAtivo(0);
+		Map<Integer, ClienteServidor> clientes = this.servidor.clientes;
+				
+		List<Integer> keysAsArray = new ArrayList<Integer>(clientes.keySet());
+		Random r = new Random();
 		
+		do{
+			keyCliente = keysAsArray.get(r.nextInt(keysAsArray.size()));
+		} while(clientes.get(keyCliente).getAtivo() == 0);				
+		
+		for(int key : clientes.keySet()){
+			if(clientes.get(key).getLogin().equals(login)){
+				
+				clientePassivo.setLoginId(clientes.get(key).getLoginId());
+				clientePassivo.setLoginPS(clientes.get(key).getLoginPS());
+				
+				clientePassivo.setJogador1Id(clientes.get(keyCliente).getLoginId());
+				clientePassivo.setJogador1PS(clientes.get(keyCliente).getLoginPS());
+				clientePassivo.setJogador2Id(clientes.get(keyCliente).getOponenteId());
+				clientePassivo.setJogador2PS(clientes.get(keyCliente).getOponentePS());
+				
+				clientes.get(keyCliente).setClientePassivo(clientePassivo);
+				
+				servidor.distribuiMensagem(clientes.get(key).getLoginPS(), "logarPassivo;" 
+										 + clientes.get(keyCliente).getLogin() 
+										 + ";" 
+										 + clientes.get(keyCliente).getLoginId()
+										 + ";" 
+										 + clientes.get(keyCliente).getOponente()
+										 + ";" 
+										 + clientes.get(keyCliente).getOponenteId()
+										 + ";" );
+			}
+		}				
 	}
 	
 	public void Jogar(String id, String linha, String coluna){
@@ -80,5 +128,9 @@ public class TrataCliente implements Runnable {
 		ClienteServidor cs = this.servidor.clientes.get(Integer.parseInt(id));
 		
 		servidor.distribuiMensagem(cs.getOponentePS(), "jogar;" + linha + ";" + coluna);
+		
+		for (ClientePassivo i : cs.getClientePassivo()) {
+			servidor.distribuiMensagem(i.loginPS, "jogarPassivo;" + id + ";" + linha + ";" + coluna);
+		}
 	}
 }

@@ -25,11 +25,6 @@ public class Login extends JFrame {
 	private final JLabel lblCarregando;
 	private Cliente cliente;
 
-	/**
-	 * Launch the application.
-	 */
-	
-	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -76,18 +71,33 @@ public class Login extends JFrame {
 		layeredPane.add(btnJogar);
 		
 		btnJogar.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
-				String dados = "";
-				String[] array = null;
 				try {
-									
 					cliente = new Cliente("127.0.0.1", 11111, txtNomeJogador.getText());
 					cliente.executa();
-					
-					System.out.println("MeuLogin: " + cliente.getLogin());
-					
 					cliente.enviaDados("logar;"+txtNomeJogador.getText());
+					
+					lblCarregando.setVisible(true);
+					JOptionPane.showMessageDialog(null, "Conectado !");
+		
+				} catch (IOException e) {
+					lblCarregando.setVisible(false);
+					JOptionPane.showMessageDialog(null, "Erro na conexão!");
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		btnOlhar = new JButton("Olhar");
+		btnOlhar.setBounds(226, 84, 89, 23);
+		layeredPane.add(btnOlhar);		
+		
+		btnOlhar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+				try {
+					cliente = new Cliente("127.0.0.1", 11111, txtNomeJogador.getText());
+					cliente.executa();
+					cliente.enviaDados("logarPassivo;"+txtNomeJogador.getText());
 					
 					lblCarregando.setVisible(true);
 					JOptionPane.showMessageDialog(null, "Conectado !");
@@ -98,37 +108,6 @@ public class Login extends JFrame {
 					JOptionPane.showMessageDialog(null, "Erro na conexão!");
 					e.printStackTrace();
 				}
-				
-				
-			}
-		});
-		
-		btnOlhar = new JButton("Olhar");
-		btnOlhar.setBounds(226, 84, 89, 23);
-		layeredPane.add(btnOlhar);		
-		
-		btnOlhar.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent arg0) {
-				/*String oponente = "";
-				try {
-					
-					Cliente cliente = new Cliente("127.0.0.1", 12345);
-					cliente.executa();
-					
-					cliente.enviaDados("logar;"+txtNomeJogador.getText());
-					
-					oponente = cliente.recebeDados();
-					
-					System.out.println("Oponente = "+oponente);
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				Velha velha = new Velha(txtNomeJogador.getText(), oponente);
-				velha.show();*/
 			}
 		});
 	}
