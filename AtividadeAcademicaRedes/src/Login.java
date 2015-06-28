@@ -24,6 +24,8 @@ public class Login extends JFrame {
 	private JLayeredPane layeredPane;
 	private final JLabel lblCarregando;
 	private Cliente cliente;
+	private JTextField ipServidor;
+	private JTextField portaServidor;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -58,7 +60,7 @@ public class Login extends JFrame {
 		
 		lblCarregando = new JLabel("Aguardando um oponente se conectar...");
 		lblCarregando.setVisible(false);
-		lblCarregando.setBounds(10, 118, 246, 14);
+		lblCarregando.setBounds(10, 226, 246, 14);
 		layeredPane.add(lblCarregando);
 		
 		txtNomeJogador = new JTextField();
@@ -67,13 +69,13 @@ public class Login extends JFrame {
 		txtNomeJogador.setColumns(10);
 		
 		btnJogar = new JButton("Jogar");
-		btnJogar.setBounds(325, 84, 89, 23);
+		btnJogar.setBounds(325, 188, 89, 23);
 		layeredPane.add(btnJogar);
 		
 		btnJogar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					cliente = new Cliente("127.0.0.1", 11111, txtNomeJogador.getText());
+					cliente = new Cliente(ipServidor.getText(), Integer.parseInt(portaServidor.getText()), txtNomeJogador.getText());
 					cliente.executa();
 					cliente.enviaDados("logar;"+txtNomeJogador.getText());
 					
@@ -89,13 +91,31 @@ public class Login extends JFrame {
 		});
 		
 		btnOlhar = new JButton("Olhar");
-		btnOlhar.setBounds(226, 84, 89, 23);
+		btnOlhar.setBounds(226, 188, 89, 23);
 		layeredPane.add(btnOlhar);		
+		
+		ipServidor = new JTextField();
+		ipServidor.setColumns(10);
+		ipServidor.setBounds(10, 92, 404, 20);
+		layeredPane.add(ipServidor);
+		
+		JLabel lblEntreComIp = new JLabel("Entre com ip do servidor:");
+		lblEntreComIp.setBounds(10, 67, 167, 14);
+		layeredPane.add(lblEntreComIp);
+		
+		portaServidor = new JTextField();
+		portaServidor.setColumns(10);
+		portaServidor.setBounds(10, 157, 404, 20);
+		layeredPane.add(portaServidor);
+		
+		JLabel lblEntreComA = new JLabel("Entre com a porta:");
+		lblEntreComA.setBounds(10, 132, 167, 14);
+		layeredPane.add(lblEntreComA);
 		
 		btnOlhar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				try {
-					cliente = new Cliente("127.0.0.1", 11111, txtNomeJogador.getText());
+					cliente = new Cliente(ipServidor.getText(), Integer.parseInt(portaServidor.getText()), txtNomeJogador.getText());
 					cliente.executa();
 					cliente.enviaDados("logarPassivo;"+txtNomeJogador.getText());
 					
