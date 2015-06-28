@@ -20,6 +20,7 @@ public class Velha extends JFrame {
 									  {0, 0, 0},
 									  {0, 0, 0}
 								  };
+	
 	private int jogador = 1;
 	private JPanel contentPane;
 	private JButton button_00 = new JButton("");
@@ -45,27 +46,6 @@ public class Velha extends JFrame {
 	JLabel lblNomeJogador = new JLabel();
 	JLabel lblNomeJogo = new JLabel();
 	
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Velha frame = new Velha("Michel");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
-	 * Create the frame.
-	 * @param nomeJogador
-	 * @param nomeOponente
-	 */
 	public Velha(String nomeJogador, String nomeOponente, Cliente cliente) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 318);
@@ -97,7 +77,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_00.setBounds(125, 72, 50, 50);
@@ -116,7 +96,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_10.setBounds(125, 133, 50, 50);
@@ -136,7 +116,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		layeredPane.add(button_20);
@@ -154,7 +134,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_11.setBounds(185, 133, 50, 50);
@@ -173,7 +153,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_01.setBounds(185, 72, 50, 50);
@@ -192,7 +172,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_21.setBounds(185, 190, 50, 50);
@@ -211,7 +191,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_02.setBounds(245, 72, 50, 50);
@@ -230,7 +210,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_12.setBounds(245, 133, 50, 50);
@@ -249,7 +229,7 @@ public class Velha extends JFrame {
 				
 				int valor = cliqueBotaoVelha(linha, coluna);
 				
-				recebeOponente();
+				habilitaBotoes();
 			}
 		});
 		button_22.setBounds(245, 190, 50, 50);
@@ -275,14 +255,17 @@ public class Velha extends JFrame {
 		layeredPane.add(panel);
 		
 		if (Integer.parseInt(cliente.getId()) > Integer.parseInt(cliente.getIdOponente())){
-			recebeOponente();
+			habilitaBotoes();
 		}
 	}
 	
-	public void recebeOponente(){
+	/*public void recebeOponente(){
 		try {
 			habilitaBotoes();
 			
+			
+			InputStream is = cliente.getSocketCliente();
+			Recebedor recebedor = new Recebedor();
 			String dados = cliente.recebeDados();
 			
 			System.out.println(dados);
@@ -300,7 +283,7 @@ public class Velha extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public void habilitaBotoes() {
 		for(int i=0; i < 3; i++){

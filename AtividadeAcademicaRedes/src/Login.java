@@ -17,7 +17,7 @@ import javax.swing.JButton;
 public class Login extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtNomeJogador;
+	public static JTextField txtNomeJogador;
 	private JButton btnJogar;
 	private JLabel lblEntreComSeu;
 	private JButton btnOlhar;
@@ -82,25 +82,16 @@ public class Login extends JFrame {
 				String[] array = null;
 				try {
 									
-					cliente = new Cliente("127.0.0.1", 12345);
+					cliente = new Cliente("127.0.0.1", 11111, txtNomeJogador.getText());
 					cliente.executa();
+					
+					System.out.println("MeuLogin: " + cliente.getLogin());
 					
 					cliente.enviaDados("logar;"+txtNomeJogador.getText());
 					
-					
 					lblCarregando.setVisible(true);
 					JOptionPane.showMessageDialog(null, "Conectado !");
-					
-					dados = cliente.recebeDados();
-					
-					lblCarregando.setVisible(false);
-					
-					array = dados.split(";");
-					
-					cliente.setId(array[0]);
-					
-					cliente.setIdOponente(array[2]);
-					
+		
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					lblCarregando.setVisible(false);
@@ -108,8 +99,7 @@ public class Login extends JFrame {
 					e.printStackTrace();
 				}
 				
-				Velha velha = new Velha(txtNomeJogador.getText(), array[1], cliente);
-				velha.show();
+				
 			}
 		});
 		
