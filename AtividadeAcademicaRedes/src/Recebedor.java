@@ -1,6 +1,8 @@
 import java.io.InputStream;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 
 public class Recebedor implements Runnable {
 	Velha velha;
@@ -52,9 +54,19 @@ public class Recebedor implements Runnable {
 	
 	public void Jogar(String linha, String coluna){
 		
-		/*this.velha.matrizVelhaBotao[Integer.parseInt(linha)][Integer.parseInt(coluna)].setText("X");
+		this.velha.matrizVelhaBotao[Integer.parseInt(linha)][Integer.parseInt(coluna)].setText("X");
+		this.velha.matrizVelha[Integer.parseInt(linha)][Integer.parseInt(coluna)] = -1;
 		
-		this.velha.habilitaBotoes();*/
+		int retorno = this.velha.verificaMatriz();
+		if(retorno == 1){
+			JOptionPane.showMessageDialog(null, this.velha.nomeJogador+" venceu o jogo!");
+			this.velha.limparVelha();			
+		}else if(retorno == -1){
+			JOptionPane.showMessageDialog(null, this.velha.nomeOponente+" venceu o jogo!");
+			this.velha.limparVelha();		
+		}
+		
+		this.velha.habilitaBotoes();
 		
 	}
 }

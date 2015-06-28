@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 
 public class Velha extends JFrame {
 	
-	private int[][] matrizVelha = {
+	public int[][] matrizVelha = {
 									  {0, 0, 0},
 									  {0, 0, 0},
 									  {0, 0, 0}
@@ -39,8 +39,8 @@ public class Velha extends JFrame {
 			  {button_20, button_21, button_22}
 		  };
 	
-	private String nomeJogador = "";
-	private String nomeOponente = "";
+	public String nomeJogador = "";
+	public String nomeOponente = "";
 	private Cliente cliente;
 
 	JLabel lblNomeJogador = new JLabel();
@@ -235,7 +235,7 @@ public class Velha extends JFrame {
 		button_22.setBounds(245, 190, 50, 50);
 		layeredPane.add(button_22);
 		
-		JLabel lblJogador = new JLabel("Jogador:");
+		JLabel lblJogador = new JLabel("Vez:");
 		lblJogador.setBounds(10, 11, 78, 14);
 		layeredPane.add(lblJogador);
 		
@@ -290,8 +290,10 @@ public class Velha extends JFrame {
 			for(int j=0; j < 3; j++){
 				if(this.matrizVelhaBotao[i][j].isEnabled()){
 					this.matrizVelhaBotao[i][j].setEnabled(false);
+					lblNomeJogador.setText(nomeOponente);
 				}else{
 					this.matrizVelhaBotao[i][j].setEnabled(true);
+					lblNomeJogador.setText(nomeJogador);
 				}
 			}
 		}	
@@ -377,18 +379,7 @@ public class Velha extends JFrame {
 			e.printStackTrace();
 		}
     	
-    	int valor = 0;
-    	
-    	if(jogador == 1){					
-			valor = 1;
-			jogador = -1;					
-			lblNomeJogador.setText(nomeOponente);
-		}				
-		else if (jogador == -1){
-			valor = -1;
-			jogador = 1;
-			lblNomeJogador.setText(nomeJogador);
-		}
+    	int valor = 1;
 
 		preencheMatriz(linha, coluna, valor);
 		int retorno = verificaMatriz();
